@@ -2,9 +2,6 @@ import React, {useState, useEffect} from 'react'
 import Loading from './Loading.js';
 
 
-
-console.log(Loading)
-
 const AppContextApi = React.createContext();
 const allUrl = 'https://restcountries.com/v2';
 
@@ -24,8 +21,6 @@ useEffect(() => {
         const newDataList = countryList.map(item => {
             return item;
         })
-
-        console.log(everyCountry)
     
         setCountries(newDataList);
         setLoading(false)
@@ -44,8 +39,6 @@ if(loading){
 
     const filterRegion = async (regionValue) => {
         setLoading(true)
-
-        console.log(regionValue)
         if(regionValue === 'All Region'){
             let allVal = await (await fetch(`${allUrl}/all`)).json();
             let loadAllVal = allVal.map(allCountries => allCountries);

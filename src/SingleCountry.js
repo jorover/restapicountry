@@ -3,7 +3,6 @@ import { useParams } from 'react-router';
 import SingleCountryCode from './SingleCountryCode';
 import BackHome from './BackHome';
 import Loading from './Loading';
-import { AppContextApi } from './AppContext';
 
 const url = 'https://restcountries.com/v2';
 
@@ -12,9 +11,9 @@ const SingleCountry = () => {
 
 const {name} = useParams();
 
-const {loading, setLoading} = React.useContext(AppContextApi);
-
 const [singleCountry, setSingleCountry] = useState([]);
+
+const [nameLoading, setnameLoading] = React.useState(true);
 
 
 
@@ -22,28 +21,32 @@ const [singleCountry, setSingleCountry] = useState([]);
 useEffect(() => {
 
     const fetchNameData = async () => {
-        try {
-         const nameData = await (await fetch(`${url}/name/${name}`)).json();
-         const newNameData = nameData.map(eachNameCountry => eachNameCountry);
-         setSingleCountry(newNameData)
-         setLoading(false)
-            
-        } catch (error) {
+        setnameLoading(true)
+         try {
+            const nameData = await (await fetch(`${url}/name/${name}`)).json();
+            const newNameData = nameData.map(eachNameCountry => eachNameCountry);
+            setSingleCountry(newNameData)
+            setnameLoading(false)  
+             
+         } catch (error) {
              console.log(error)
-        }
-     
+             setnameLoading(false)
+             
+         }
      }
 
 fetchNameData();
 
-}, [name, setLoading]);
+}, [name]);
 
 
-if(loading) {
+if(nameLoading) {
     return (
         <Loading />
     )
 }
+
+
 
 
   return (
